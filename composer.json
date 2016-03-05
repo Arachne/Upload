@@ -1,0 +1,22 @@
+{
+	"name": "arachne/upload",
+	"type": "library",
+	"keywords": [ "nette", "arachne", "upload" ],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Jáchym Toušek",
+			"homepage": "http://enumag.cz",
+			"email": "enumag@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"nette/http": "~2.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"Arachne\\Upload\\": "src"
+		}
+	}
+}
