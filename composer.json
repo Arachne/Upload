@@ -19,5 +19,10 @@
         "psr-4": {
             "Arachne\\Upload\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Integration\\": "tests/integration/src"
+        }
     }
 }
