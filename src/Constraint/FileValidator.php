@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Arachne
  *
  * Copyright (c) Jáchym Toušek (enumag@gmail.com)
@@ -28,13 +28,13 @@ class FileValidator extends ConstraintValidator
     const KIB_BYTES = 1024;
     const MIB_BYTES = 1048576;
 
-    private static $suffices = array(
+    private static $suffices = [
         1 => 'bytes',
         self::KB_BYTES => 'kB',
         self::MB_BYTES => 'MB',
         self::KIB_BYTES => 'KiB',
         self::MIB_BYTES => 'MiB',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -230,12 +230,12 @@ class FileValidator extends ConstraintValidator
             $sizeAsString = (string) round($size / $coef, 2);
         }
 
-        return array($sizeAsString, $limitAsString, self::$suffices[$coef]);
+        return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
     }
 
     /**
      * Returns the maximum size of an uploaded file as configured in php.ini.
-     * Copied from Symfony\Component\HttpFoundation\File::getMaxFilesize()
+     * Copied from Symfony\Component\HttpFoundation\File::getMaxFilesize().
      *
      * @return int The maximum size of an uploaded file in bytes
      */
@@ -259,6 +259,7 @@ class FileValidator extends ConstraintValidator
             case 'm': $max *= 1024;
             case 'k': $max *= 1024;
         }
+
         return $max;
     }
 }

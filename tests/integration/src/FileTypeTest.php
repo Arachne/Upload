@@ -18,7 +18,7 @@ class FileTypeTest extends Unit
     {
         $config = new Configurator();
         $config->setTempDirectory(TEMP_DIR);
-        $config->addConfig(__DIR__ . '/../config/config.neon');
+        $config->addConfig(__DIR__.'/../config/config.neon');
         $container = $config->createContainer();
 
         $this->factory = $container->getByType(FormFactoryInterface::class);
@@ -46,6 +46,7 @@ class FileTypeTest extends Unit
         $form->submit(null);
         $this->assertNull($form->getData());
     }
+
     public function testSubmitMultiple()
     {
         $form = $this->factory->createBuilder(FileType::class, null, [
@@ -61,6 +62,7 @@ class FileTypeTest extends Unit
         $this->assertSame('arachne_file[]', $view->vars['full_name']);
         $this->assertArrayHasKey('multiple', $view->vars['attr']);
     }
+
     public function testDontPassValueToView()
     {
         $form = $this->factory->create(FileType::class);
