@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Unit;
 
 use Arachne\Upload\Constraint\File;
 use Codeception\Test\Unit;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Unit;
 
 use Codeception\Test\Unit;
 use Symfony\Component\Validator\Constraint;

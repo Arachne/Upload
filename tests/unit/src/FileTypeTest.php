@@ -1,24 +1,18 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Unit;
 
-use Arachne\Bootstrap\Configurator;
 use Arachne\Upload\Type\FileType;
 use Codeception\MockeryModule\Test;
 use Mockery;
 use Nette\Http\FileUpload;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Forms;
 
 class FileTypeTest extends Test
 {
     protected function _before()
     {
-        $config = new Configurator();
-        $config->setTempDirectory(TEMP_DIR);
-        $config->addConfig(__DIR__.'/../config/config.neon');
-        $container = $config->createContainer();
-
-        $this->factory = $container->getByType(FormFactoryInterface::class);
+        $this->factory = Forms::createFormFactoryBuilder()->getFormFactory();
     }
 
     public function testSetData()
