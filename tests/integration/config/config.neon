@@ -1,12 +1,18 @@
 extensions:
-    arachne.twig: Arachne\Twig\DI\TwigExtension(%tempDir%/twig)
+    arachne.dihelpers.iteratorresolvers: Arachne\DIHelpers\DI\IteratorResolversExtension
+    arachne.dihelpers.iterators: Arachne\DIHelpers\DI\IteratorsExtension
+    arachne.dihelpers.resolvers: Arachne\DIHelpers\DI\ResolversExtension
+    arachne.forms: Arachne\Forms\DI\FormsExtension
+    #arachne.twig: Arachne\Twig\DI\TwigExtension(%tempDir%/cache/twig, %debugMode%)
+    arachne.upload: Arachne\Upload\DI\UploadExtension
+    nette.http: Nette\Bridges\HttpDI\HttpExtension
+    nette.session: Nette\Bridges\HttpDI\SessionExtension(%debugMode%)
+    kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    kdyby.translation: Kdyby\Translation\DI\TranslationExtension
+    kdyby.validator: Kdyby\Validator\DI\ValidatorExtension
 
-arachne.twig:
-    options:
-        debug: true
-    dumpOptions:
-        truncate: 8
-    paths:
-        - %appDir%/../templates/default
-        namespace:
-            - %appDir%/../templates/namespace
+kdyby.annotations:
+    cache: array
+
+kdyby.validator:
+    cache: array
