@@ -4,15 +4,12 @@ namespace Tests\Integration;
 
 use Arachne\Bootstrap\Configurator;
 use Arachne\Upload\Type\FileType;
-use Codeception\Test\Unit;
+use Codeception\MockeryModule\Test;
 use Mockery;
 use Nette\Http\FileUpload;
 use Symfony\Component\Form\FormFactoryInterface;
 
-/**
- * @author Jáchym Toušek <enumag@gmail.com>
- */
-class FileTypeTest extends Unit
+class FileTypeTest extends Test
 {
     protected function _before()
     {
