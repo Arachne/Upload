@@ -21,7 +21,7 @@ class FileValidatorTest extends AbstractConstraintValidatorTest
     {
         parent::_before();
 
-        $this->path = TEMP_DIR.DIRECTORY_SEPARATOR.'FileValidatorTest';
+        $this->path = __DIR__.'/../../_temp/FileValidatorTest';
         $this->file = fopen($this->path, 'w');
         fwrite($this->file, ' ', 1);
     }
