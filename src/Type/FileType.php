@@ -41,9 +41,6 @@ class FileType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        // Cannot be just 'file' because of a bug.
-        // @link https://github.com/symfony/symfony/pull/17874
-        // @todo Remove this method when the bug gets fixed and increase version constraint in composer.json.
         return 'arachne_file';
     }
 }
