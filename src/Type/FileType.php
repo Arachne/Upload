@@ -15,9 +15,11 @@ class FileType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => 'Nette\Http\FileUpload',
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Nette\Http\FileUpload',
+            ]
+        );
     }
 
     /**
