@@ -5,6 +5,7 @@ namespace Arachne\Upload\Type;
 use Nette\Http\FileUpload;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType as BaseFileType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,7 +20,9 @@ class FileType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => FileUpload::class,
+                'data_class' => function (Options $options) {
+                    return $options['multiple'] ? null : FileUpload::class;
+                },
             ]
         );
     }

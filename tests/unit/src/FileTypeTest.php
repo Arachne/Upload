@@ -38,15 +38,62 @@ class FileTypeTest extends Test
         $this->assertNull($form->getData());
     }
 
-    public function testSubmitMultiple()
+    public function testSubmitEmptyMultiple()
     {
-        $form = $this->factory->createBuilder(FileType::class, null, [
-            'multiple' => true,
-        ])->getForm();
+        $form = $this->factory
+            ->createBuilder(
+                FileType::class,
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->getForm();
+
+        // submitted data when an input file is uploaded without choosing any file
+        $form->submit([null]);
+
+        $this->assertSame([], $form->getData());
+    }
+
+    public function testSetDataMultiple()
+    {
+        $form = $this->factory
+            ->createBuilder(
+                FileType::class,
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->getForm();
+
         $data = [
             $this->createUploadedFileMock('abcdef', 'first.jpg', true),
             $this->createUploadedFileMock('zyxwvu', 'second.jpg', true),
         ];
+
+        $form->setData($data);
+        $this->assertSame($data, $form->getData());
+    }
+
+    public function testSubmitMultiple()
+    {
+        $form = $this->factory
+            ->createBuilder(
+                FileType::class,
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->getForm();
+
+        $data = [
+            $this->createUploadedFileMock('abcdef', 'first.jpg', true),
+            $this->createUploadedFileMock('zyxwvu', 'second.jpg', true),
+        ];
+
         $form->submit($data);
         $this->assertSame($data, $form->getData());
         $view = $form->createView();
