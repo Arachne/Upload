@@ -3,12 +3,12 @@
 namespace Tests\Unit;
 
 use Arachne\Upload\Type\FileType;
-use Codeception\MockeryModule\Test;
-use Mockery;
+use Codeception\Test\Unit;
+use Eloquent\Phony\Phpunit\Phony;
 use Nette\Http\FileUpload;
 use Symfony\Component\Form\Forms;
 
-class FileTypeTest extends Test
+class FileTypeTest extends Unit
 {
     protected function _before()
     {
@@ -113,20 +113,20 @@ class FileTypeTest extends Test
 
     private function createUploadedFileMock($name, $originalName, $valid)
     {
-        $file = Mockery::mock(FileUpload::class);
+        $fileHandle = Phony::mock(FileUpload::class);
 
-        $file
-            ->shouldReceive('getTemporaryFile')
-            ->andReturn($name);
+        $fileHandle
+            ->getTemporaryFile
+            ->returns($name);
 
-        $file
-            ->shouldReceive('getName')
-            ->andReturn($originalName);
+        $fileHandle
+            ->getName
+            ->returns($originalName);
 
-        $file
-            ->shouldReceive('isOk')
-            ->andReturn($valid);
+        $fileHandle
+            ->isOk
+            ->returns($valid);
 
-        return $file;
+        return $fileHandle->get();
     }
 }
