@@ -2,7 +2,9 @@
 
 namespace Arachne\Upload\Type;
 
+use Nette\Http\FileUpload;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType as BaseFileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -17,7 +19,7 @@ class FileType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Nette\Http\FileUpload',
+                'data_class' => FileUpload::class,
             ]
         );
     }
@@ -27,7 +29,7 @@ class FileType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\FileType';
+        return BaseFileType::class;
     }
 
     /**
