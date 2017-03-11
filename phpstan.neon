@@ -1,0 +1,8 @@
+includes:
+    - vendor-tools/phpstan/phpstan-nette/extension.neon
+    - vendor-tools/phpstan/phpstan-nette/rules.neon
+
+parameters:
+    ignoreErrors:
+        - '#Cannot access property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize from current scope#'
+        - '#Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
