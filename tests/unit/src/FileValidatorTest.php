@@ -18,18 +18,18 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         return new FileValidator();
     }
 
-    protected function _before()
+    protected function setUp()
     {
-        parent::_before();
+        parent::setUp();
 
         $this->path = __DIR__.'/../../_temp/FileValidatorTest';
         $this->file = fopen($this->path, 'w');
         fwrite($this->file, ' ', 1);
     }
 
-    protected function _after()
+    protected function tearDown()
     {
-        parent::_after();
+        parent::tearDown();
 
         if (is_resource($this->file)) {
             fclose($this->file);
