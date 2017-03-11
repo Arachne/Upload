@@ -99,7 +99,7 @@ class FileValidator extends ConstraintValidator
                     return;
                 default:
                     $this->context->buildViolation($constraint->uploadErrorMessage)
-                        ->setCode($value->getError())
+                        ->setCode((string) $value->getError())
                         ->addViolation();
 
                     return;

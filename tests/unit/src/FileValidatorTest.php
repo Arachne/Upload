@@ -5,8 +5,9 @@ namespace Tests\Unit;
 use Arachne\Upload\Constraint\File;
 use Arachne\Upload\Constraint\FileValidator;
 use Nette\Http\FileUpload;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class FileValidatorTest extends AbstractConstraintValidatorTest
+class FileValidatorTest extends ConstraintValidatorTestCase
 {
     protected $path;
 

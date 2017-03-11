@@ -6,10 +6,16 @@ use Arachne\Upload\Type\FileType;
 use Codeception\Test\Unit;
 use Eloquent\Phony\Phpunit\Phony;
 use Nette\Http\FileUpload;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class FileTypeTest extends Unit
 {
+    /**
+     * @var FormFactoryInterface
+     */
+    private $factory;
+
     protected function _before()
     {
         $this->factory = Forms::createFormFactoryBuilder()->getFormFactory();
