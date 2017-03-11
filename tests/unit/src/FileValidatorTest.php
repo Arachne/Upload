@@ -74,13 +74,15 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidUploadedfile()
     {
-        $file = new FileUpload([
-            'name' => 'originalName',
-            'type' => 'mime',
-            'size' => 0,
-            'tmp_name' => $this->path,
-            'error' => 0,
-        ]);
+        $file = new FileUpload(
+            [
+                'name' => 'originalName',
+                'type' => 'mime',
+                'size' => 0,
+                'tmp_name' => $this->path,
+                'error' => 0,
+            ]
+        );
 
         $this->validator->validate($file, new File());
 
@@ -162,10 +164,12 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         fwrite($this->file, '0');
         fclose($this->file);
 
-        $constraint = new File([
-            'maxSize' => $limit,
-            'maxSizeMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'maxSize' => $limit,
+                'maxSizeMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($this->getFile($this->path), $constraint);
 
@@ -210,10 +214,12 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         fwrite($this->file, '0');
         fclose($this->file);
 
-        $constraint = new File([
-            'maxSize' => $limit,
-            'maxSizeMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'maxSize' => $limit,
+                'maxSizeMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($this->getFile($this->path), $constraint);
 
@@ -225,9 +231,11 @@ class FileValidatorTest extends ConstraintValidatorTestCase
      */
     public function testInvalidMaxSize()
     {
-        $constraint = new File([
-            'maxSize' => '1abc',
-        ]);
+        $constraint = new File(
+            [
+                'maxSize' => '1abc',
+            ]
+        );
 
         $this->validator->validate($this->path, $constraint);
     }
@@ -263,11 +271,13 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         fwrite($this->file, '0');
         fclose($this->file);
 
-        $constraint = new File([
-            'maxSize' => $limit,
-            'binaryFormat' => $binaryFormat,
-            'maxSizeMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'maxSize' => $limit,
+                'binaryFormat' => $binaryFormat,
+                'maxSizeMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($this->getFile($this->path), $constraint);
 
@@ -299,9 +309,11 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->method('isOk')
             ->will($this->returnValue(true));
 
-        $constraint = new File([
-            'mimeTypes' => ['image/png', 'image/jpg'],
-        ]);
+        $constraint = new File(
+            [
+                'mimeTypes' => ['image/png', 'image/jpg'],
+            ]
+        );
 
         $this->validator->validate($file, $constraint);
 
@@ -327,9 +339,11 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->method('isOk')
             ->will($this->returnValue(true));
 
-        $constraint = new File([
-            'mimeTypes' => ['image/*'],
-        ]);
+        $constraint = new File(
+            [
+                'mimeTypes' => ['image/*'],
+            ]
+        );
 
         $this->validator->validate($file, $constraint);
 
@@ -355,10 +369,12 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->method('isOk')
             ->will($this->returnValue(true));
 
-        $constraint = new File([
-            'mimeTypes' => ['image/png', 'image/jpg'],
-            'mimeTypesMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'mimeTypes' => ['image/png', 'image/jpg'],
+                'mimeTypesMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($file, $constraint);
 
@@ -389,10 +405,12 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->method('isOk')
             ->will($this->returnValue(true));
 
-        $constraint = new File([
-            'mimeTypes' => ['image/*', 'image/jpg'],
-            'mimeTypesMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'mimeTypes' => ['image/*', 'image/jpg'],
+                'mimeTypesMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($file, $constraint);
 
@@ -408,9 +426,11 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         ftruncate($this->file, 0);
 
-        $constraint = new File([
-            'disallowEmptyMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'disallowEmptyMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate($this->getFile($this->path), $constraint);
 
@@ -425,18 +445,22 @@ class FileValidatorTest extends ConstraintValidatorTestCase
      */
     public function testUploadedFileError($error, $message, array $params = [], $maxSize = null)
     {
-        $file = new FileUpload([
-            'name' => 'originalName',
-            'type' => 'mime',
-            'size' => 0,
-            'tmp_name' => '/path/to/file',
-            'error' => $error,
-        ]);
+        $file = new FileUpload(
+            [
+                'name' => 'originalName',
+                'type' => 'mime',
+                'size' => 0,
+                'tmp_name' => '/path/to/file',
+                'error' => $error,
+            ]
+        );
 
-        $constraint = new File([
-            $message => 'myMessage',
-            'maxSize' => $maxSize,
-        ]);
+        $constraint = new File(
+            [
+                $message => 'myMessage',
+                'maxSize' => $maxSize,
+            ]
+        );
 
         $this->validator->validate($file, $constraint);
 
@@ -459,30 +483,49 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
         if (class_exists(FileUpload::class)) {
             // when no maxSize is specified on constraint, it should use the ini value
-            $tests[] = [UPLOAD_ERR_INI_SIZE, 'uploadIniSizeErrorMessage', [
-                '{{ limit }}' => FileValidator::getMaxFilesize() / 1048576,
-                '{{ suffix }}' => 'MiB',
-            ]];
+            $tests[] = [
+                UPLOAD_ERR_INI_SIZE,
+                'uploadIniSizeErrorMessage',
+                [
+                    '{{ limit }}' => FileValidator::getMaxFilesize() / 1048576,
+                    '{{ suffix }}' => 'MiB',
+                ],
+            ];
 
             // it should use the smaller limitation (maxSize option in this case)
-            $tests[] = [UPLOAD_ERR_INI_SIZE, 'uploadIniSizeErrorMessage', [
-                '{{ limit }}' => 1,
-                '{{ suffix }}' => 'bytes',
-            ], '1'];
+            $tests[] = [
+                UPLOAD_ERR_INI_SIZE,
+                'uploadIniSizeErrorMessage',
+                [
+                    '{{ limit }}' => 1,
+                    '{{ suffix }}' => 'bytes',
+                ],
+                '1',
+            ];
 
             // it correctly parses the maxSize option and not only uses simple string comparison
             // 1000M should be bigger than the ini value
-            $tests[] = [UPLOAD_ERR_INI_SIZE, 'uploadIniSizeErrorMessage', [
-                '{{ limit }}' => FileValidator::getMaxFilesize() / 1048576,
-                '{{ suffix }}' => 'MiB',
-            ], '1000M'];
+            $tests[] = [
+                UPLOAD_ERR_INI_SIZE,
+                'uploadIniSizeErrorMessage',
+                [
+                    '{{ limit }}' => FileValidator::getMaxFilesize() / 1048576,
+                    '{{ suffix }}' => 'MiB',
+                ],
+                '1000M',
+            ];
 
             // it correctly parses the maxSize option and not only uses simple string comparison
             // 1000M should be bigger than the ini value
-            $tests[] = [UPLOAD_ERR_INI_SIZE, 'uploadIniSizeErrorMessage', [
-                '{{ limit }}' => '0.1',
-                '{{ suffix }}' => 'MB',
-            ], '100K'];
+            $tests[] = [
+                UPLOAD_ERR_INI_SIZE,
+                'uploadIniSizeErrorMessage',
+                [
+                    '{{ limit }}' => '0.1',
+                    '{{ suffix }}' => 'MB',
+                ],
+                '100K',
+            ];
         }
 
         return $tests;
@@ -490,9 +533,11 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
     public function testFileNotFound()
     {
-        $constraint = new File([
-            'notFoundMessage' => 'myMessage',
-        ]);
+        $constraint = new File(
+            [
+                'notFoundMessage' => 'myMessage',
+            ]
+        );
 
         $this->validator->validate('foobar', $constraint);
 
