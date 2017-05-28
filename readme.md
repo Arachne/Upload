@@ -17,5 +17,5 @@ Installation
 The best way to install Arachne/Upload is using [Composer](http://getcomposer.org/).
 
 ```sh
-$ composer require arachne/upload
+composer require arachne/upload
 ```
