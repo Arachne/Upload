@@ -31,7 +31,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\Unit\\": "tests/unit/src"
-        }
+        },
+        "files": [
+            "vendor/codeception/codeception/shim.php"
+        ]
     },
     "scripts": {
         "tools": "sh composer-tools.sh",
