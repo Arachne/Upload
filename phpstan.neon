@@ -3,9 +3,9 @@ includes:
     - vendor-tools/phpstan/phpstan-nette/rules.neon
 
 parameters:
+    excludes_analyse:
+        - %rootDir%/../../../tests/_*
+
     ignoreErrors:
         - '#^Access to protected property \$maxSize of class Symfony\\Component\\Validator\\Constraints\\File#'
         - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
-
-    excludes_analyse:
-        - %rootDir%/../../../tests/_helpers/*
