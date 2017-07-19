@@ -247,8 +247,11 @@ class FileValidator extends ConstraintValidator
         }
         switch (substr($iniMax, -1)) {
             case 't': $max *= 1024;
+            // no break
             case 'g': $max *= 1024;
+            // no break
             case 'm': $max *= 1024;
+            // no break
             case 'k': $max *= 1024;
         }
 
