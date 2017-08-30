@@ -7,5 +7,5 @@ parameters:
         - %rootDir%/../../../tests/_*
 
     ignoreErrors:
-        - '#^Access to protected property \$maxSize of class Symfony\\Component\\Validator\\Constraints\\File#'
+        - '#^Property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize \(int\) does not accept int\|string#'
         - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
