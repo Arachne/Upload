@@ -188,9 +188,9 @@ class FileValidator extends ConstraintValidator
         }
     }
 
-    private static function moreDecimalsThan(string $double, int $numberOfDecimals): bool
+    private static function moreDecimalsThan(float $double, int $numberOfDecimals): bool
     {
-        return strlen($double) > strlen(round($double, $numberOfDecimals));
+        return strlen((string) $double) > strlen((string) round($double, $numberOfDecimals));
     }
 
     /**
@@ -207,13 +207,13 @@ class FileValidator extends ConstraintValidator
             $coefFactor = self::KB_BYTES;
         }
 
-        $limitAsString = (string) ($limit / $coef);
+        $limitDivided = $limit / $coef;
 
         // Restrict the limit to 2 decimals (without rounding! we
         // need the precise value)
-        while (self::moreDecimalsThan($limitAsString, 2)) {
+        while (self::moreDecimalsThan($limitDivided, 2)) {
             $coef /= $coefFactor;
-            $limitAsString = (string) ($limit / $coef);
+            $limitDivided = $limit / $coef;
         }
 
         // Convert size to the same measure, but round to 2 decimals
@@ -221,13 +221,13 @@ class FileValidator extends ConstraintValidator
 
         // If the size and limit produce the same string output
         // (due to rounding), reduce the coefficient
-        while ($sizeAsString === $limitAsString) {
+        while ($sizeAsString === (string) $limitDivided) {
             $coef /= $coefFactor;
-            $limitAsString = (string) ($limit / $coef);
+            $limitDivided = $limit / $coef;
             $sizeAsString = (string) round($size / $coef, 2);
         }
 
-        return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
+        return [$sizeAsString, (string) $limitDivided, self::$suffices[$coef]];
     }
 
     /**
