@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Arachne\Upload\Constraint;
 
 use Symfony\Component\Validator\Constraints\File as BaseFileConstraint;

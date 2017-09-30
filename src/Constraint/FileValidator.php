@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Arachne\Upload\Constraint;
 
 use Nette\Http\FileUpload;
