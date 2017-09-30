@@ -9,16 +9,22 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class FileValidatorTest extends ConstraintValidatorTestCase
 {
+    /**
+     * @var string|null
+     */
     protected $path;
 
+    /**
+     * @var resource|null
+     */
     protected $file;
 
-    protected function createValidator()
+    protected function createValidator(): FileValidator
     {
         return new FileValidator();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -27,7 +33,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         fwrite($this->file, ' ', 1);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -43,14 +49,14 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         $this->file = null;
     }
 
-    public function testNullIsValid()
+    public function testNullIsValid(): void
     {
         $this->validator->validate(null, new File());
 
         $this->assertNoViolation();
     }
 
-    public function testEmptyStringIsValid()
+    public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new File());
 
@@ -60,19 +66,19 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     /**
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      */
-    public function testExpectsStringCompatibleTypeOrFile()
+    public function testExpectsStringCompatibleTypeOrFile(): void
     {
         $this->validator->validate(new \stdClass(), new File());
     }
 
-    public function testValidFile()
+    public function testValidFile(): void
     {
         $this->validator->validate($this->path, new File());
 
         $this->assertNoViolation();
     }
 
-    public function testValidUploadedfile()
+    public function testValidUploadedfile(): void
     {
         $file = new FileUpload(
             [
@@ -89,7 +95,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function provideMaxSizeExceededTests()
+    public function provideMaxSizeExceededTests(): array
     {
         // We have various interesting limit - size combinations to test.
         // Assume a limit of 1000 bytes (1 kB). Then the following table
@@ -157,8 +163,10 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider provideMaxSizeExceededTests
+     *
+     * @param int|string $limit
      */
-    public function testMaxSizeExceeded($bytesWritten, $limit, $sizeAsString, $limitAsString, $suffix)
+    public function testMaxSizeExceeded(int $bytesWritten, $limit, string $sizeAsString, string $limitAsString, string $suffix): void
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
@@ -182,7 +190,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function provideMaxSizeNotExceededTests()
+    public function provideMaxSizeNotExceededTests(): array
     {
         return [
             // limit in bytes
@@ -207,8 +215,10 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider provideMaxSizeNotExceededTests
+     *
+     * @param int|string $limit
      */
-    public function testMaxSizeNotExceeded($bytesWritten, $limit)
+    public function testMaxSizeNotExceeded(int $bytesWritten, $limit): void
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
@@ -229,7 +239,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     /**
      * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      */
-    public function testInvalidMaxSize()
+    public function testInvalidMaxSize(): void
     {
         $constraint = new File(
             [
@@ -240,7 +250,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate($this->path, $constraint);
     }
 
-    public function provideBinaryFormatTests()
+    public function provideBinaryFormatTests(): array
     {
         return [
             [11, 10, null, '11', '10', 'bytes'],
@@ -264,8 +274,10 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider provideBinaryFormatTests
+     *
+     * @param int|string $limit
      */
-    public function testBinaryFormat($bytesWritten, $limit, $binaryFormat, $sizeAsString, $limitAsString, $suffix)
+    public function testBinaryFormat(int $bytesWritten, $limit, ?bool $binaryFormat, string $sizeAsString, string $limitAsString, string $suffix): void
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
@@ -290,7 +302,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testValidMimeType()
+    public function testValidMimeType(): void
     {
         $file = $this
             ->getMockBuilder(FileUpload::class)
@@ -320,7 +332,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testValidWildcardMimeType()
+    public function testValidWildcardMimeType(): void
     {
         $file = $this
             ->getMockBuilder(FileUpload::class)
@@ -350,7 +362,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testInvalidMimeType()
+    public function testInvalidMimeType(): void
     {
         $file = $this
             ->getMockBuilder(FileUpload::class)
@@ -386,7 +398,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testInvalidWildcardMimeType()
+    public function testInvalidWildcardMimeType(): void
     {
         $file = $this
             ->getMockBuilder(FileUpload::class)
@@ -422,7 +434,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testDisallowEmpty()
+    public function testDisallowEmpty(): void
     {
         ftruncate($this->file, 0);
 
@@ -443,7 +455,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider uploadedFileErrorProvider
      */
-    public function testUploadedFileError($error, $message, array $params = [], $maxSize = null)
+    public function testUploadedFileError(int $error, string $message, array $params = [], ?string $maxSize = null): void
     {
         $file = new FileUpload(
             [
@@ -470,7 +482,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function uploadedFileErrorProvider()
+    public function uploadedFileErrorProvider(): array
     {
         $tests = [
             [UPLOAD_ERR_FORM_SIZE, 'uploadFormSizeErrorMessage'],
@@ -531,7 +543,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         return $tests;
     }
 
-    public function testFileNotFound()
+    public function testFileNotFound(): void
     {
         $constraint = new File(
             [
@@ -547,7 +559,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    protected function getFile($filename)
+    protected function getFile(?string $filename): ?string
     {
         return $filename;
     }

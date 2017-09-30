@@ -11,11 +11,9 @@ class FileTest extends Unit
     /**
      * @dataProvider provideValidSizes
      *
-     * @param mixed $maxSize
-     * @param int   $bytes
-     * @param bool  $binaryFormat
+     * @param int|string $maxSize
      */
-    public function testMaxSize($maxSize, $bytes, $binaryFormat)
+    public function testMaxSize($maxSize, int $bytes, bool $binaryFormat): void
     {
         $file = new File(['maxSize' => $maxSize]);
 
@@ -27,10 +25,8 @@ class FileTest extends Unit
      * @dataProvider provideValidSizes
      *
      * @param int|string $maxSize
-     * @param int        $bytes
-     * @param string     $binaryFormat
      */
-    public function testMaxSizeCanBeSetAfterInitialization($maxSize, $bytes, $binaryFormat)
+    public function testMaxSizeCanBeSetAfterInitialization($maxSize, int $bytes, bool $binaryFormat): void
     {
         $file = new File();
         $file->maxSize = $maxSize;
@@ -45,7 +41,7 @@ class FileTest extends Unit
      *
      * @param int|string $maxSize
      */
-    public function testInvalidValueForMaxSizeThrowsExceptionAfterInitialization($maxSize)
+    public function testInvalidValueForMaxSizeThrowsExceptionAfterInitialization($maxSize): void
     {
         $file = new File(['maxSize' => 1000]);
         $file->maxSize = $maxSize;
@@ -56,7 +52,7 @@ class FileTest extends Unit
      *
      * @param int|string $maxSize
      */
-    public function testMaxSizeCannotBeSetToInvalidValueAfterInitialization($maxSize)
+    public function testMaxSizeCannotBeSetToInvalidValueAfterInitialization($maxSize): void
     {
         $file = new File(['maxSize' => 1000]);
 
@@ -71,18 +67,14 @@ class FileTest extends Unit
     /**
      * @dataProvider provideInValidSizes
      * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     *
-     * @param mixed $maxSize
+
      */
-    public function testInvalidMaxSize($maxSize)
+    public function testInvalidMaxSize(string $maxSize): void
     {
         new File(['maxSize' => $maxSize]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideValidSizes()
+    public function provideValidSizes(): array
     {
         return [
             ['500', 500, false],
@@ -98,10 +90,7 @@ class FileTest extends Unit
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidSizes()
+    public function provideInvalidSizes(): array
     {
         return [
             ['+100'],
@@ -116,21 +105,16 @@ class FileTest extends Unit
     /**
      * @dataProvider provideFormats
      *
-     * @param mixed $maxSize
-     * @param bool  $guessedFormat
-     * @param bool  $binaryFormat
+     * @param int|string $maxSize
      */
-    public function testBinaryFormat($maxSize, $guessedFormat, $binaryFormat)
+    public function testBinaryFormat($maxSize, ?bool $guessedFormat, bool $binaryFormat): void
     {
         $file = new File(['maxSize' => $maxSize, 'binaryFormat' => $guessedFormat]);
 
         $this->assertSame($binaryFormat, $file->binaryFormat);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFormats()
+    public function provideFormats(): array
     {
         return [
             [100, null, false],

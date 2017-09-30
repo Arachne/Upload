@@ -20,6 +20,9 @@ class FileValidator extends ConstraintValidator
     const KIB_BYTES = 1024;
     const MIB_BYTES = 1048576;
 
+    /**
+     * @var array
+     */
     private static $suffices = [
         1 => 'bytes',
         self::KB_BYTES => 'kB',
@@ -31,7 +34,7 @@ class FileValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof File) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\File');
@@ -183,16 +186,16 @@ class FileValidator extends ConstraintValidator
         }
     }
 
-    private static function moreDecimalsThan($double, $numberOfDecimals)
+    private static function moreDecimalsThan(string $double, int $numberOfDecimals): bool
     {
-        return strlen((string) $double) > strlen(round($double, $numberOfDecimals));
+        return strlen($double) > strlen(round($double, $numberOfDecimals));
     }
 
     /**
      * Convert the limit to the smallest possible number
      * (i.e. try "MB", then "kB", then "bytes").
      */
-    private function factorizeSizes($size, $limit, $binaryFormat)
+    private function factorizeSizes(int $size, int $limit, bool $binaryFormat): array
     {
         if ($binaryFormat) {
             $coef = self::MIB_BYTES;
@@ -228,10 +231,8 @@ class FileValidator extends ConstraintValidator
     /**
      * Returns the maximum size of an uploaded file as configured in php.ini.
      * Copied from Symfony\Component\HttpFoundation\File::getMaxFilesize().
-     *
-     * @return int The maximum size of an uploaded file in bytes
      */
-    public static function getMaxFilesize()
+    public static function getMaxFilesize(): int
     {
         $iniMax = strtolower(ini_get('upload_max_filesize'));
         if ('' === $iniMax) {

@@ -16,12 +16,12 @@ class FileTypeTest extends Unit
      */
     private $factory;
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->factory = Forms::createFormFactoryBuilder()->getFormFactory();
     }
 
-    public function testSetData()
+    public function testSetData(): void
     {
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $data = $this->createUploadedFileMock('abcdef', 'original.jpg', true);
@@ -29,7 +29,7 @@ class FileTypeTest extends Unit
         $this->assertSame($data, $form->getData());
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $data = $this->createUploadedFileMock('abcdef', 'original.jpg', true);
@@ -37,14 +37,14 @@ class FileTypeTest extends Unit
         $this->assertSame($data, $form->getData());
     }
 
-    public function testSubmitEmpty()
+    public function testSubmitEmpty(): void
     {
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $form->submit(null);
         $this->assertNull($form->getData());
     }
 
-    public function testSubmitEmptyMultiple()
+    public function testSubmitEmptyMultiple(): void
     {
         $form = $this->factory
             ->createBuilder(
@@ -62,7 +62,7 @@ class FileTypeTest extends Unit
         $this->assertSame([], $form->getData());
     }
 
-    public function testSetDataMultiple()
+    public function testSetDataMultiple(): void
     {
         $form = $this->factory
             ->createBuilder(
@@ -83,7 +83,7 @@ class FileTypeTest extends Unit
         $this->assertSame($data, $form->getData());
     }
 
-    public function testSubmitMultiple()
+    public function testSubmitMultiple(): void
     {
         $form = $this->factory
             ->createBuilder(
@@ -107,7 +107,7 @@ class FileTypeTest extends Unit
         $this->assertArrayHasKey('multiple', $view->vars['attr']);
     }
 
-    public function testDontPassValueToView()
+    public function testDontPassValueToView(): void
     {
         $form = $this->factory->create(FileType::class);
         $form->submit([
@@ -117,7 +117,7 @@ class FileTypeTest extends Unit
         $this->assertEquals('', $view->vars['value']);
     }
 
-    private function createUploadedFileMock($name, $originalName, $valid)
+    private function createUploadedFileMock(string $name, string $originalName, bool $valid): FileUpload
     {
         $fileHandle = Phony::mock(FileUpload::class);
 
