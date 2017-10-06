@@ -10,4 +10,3 @@ parameters:
         - '#^Property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize \(int\) does not accept int\|string#'
         - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
         - '#^Method Tests\\Unit\\[a-zA-Z]++::[a-zA-Z]++\(\) should return [a-zA-Z\\]++ but returns Eloquent\\Phony\\Mock\\Mock#'
-        - '#^Parameter \#1 \$submittedData of method Symfony\\Component\\Form\\FormInterface::submit\(\) expects mixed\[\]\|string\|null, Nette\\Http\\FileUpload given#'
