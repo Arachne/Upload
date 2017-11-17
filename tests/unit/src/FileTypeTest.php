@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Arachne\Forms\Extension\Application\Type\FormTypeApplicationExtension;
 use Arachne\Upload\Type\FileType;
 use Codeception\Test\Unit;
 use Eloquent\Phony\Phpunit\Phony;
@@ -20,7 +21,9 @@ class FileTypeTest extends Unit
 
     protected function _before(): void
     {
-        $this->factory = Forms::createFormFactoryBuilder()->getFormFactory();
+        $this->factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtension(new FormTypeApplicationExtension())
+            ->getFormFactory();
     }
 
     public function testSetData(): void
