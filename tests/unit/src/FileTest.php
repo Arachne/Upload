@@ -69,7 +69,6 @@ class FileTest extends Unit
     /**
      * @dataProvider provideInValidSizes
      * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-
      */
     public function testInvalidMaxSize(string $maxSize): void
     {
