@@ -1,6 +1,8 @@
 includes:
     - vendor/phpstan/phpstan-nette/extension.neon
     - vendor/phpstan/phpstan-nette/rules.neon
+    - vendor/eloquent/phpstan-phony/phony.neon
+    - vendor/arachne/codeception/extension.neon
 
 parameters:
     excludes_analyse:
@@ -8,5 +10,3 @@ parameters:
 
     ignoreErrors:
         - '#^Property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize \(int\) does not accept int\|string#'
-        - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
-        - '#^Method Tests\\Unit\\[a-zA-Z]++::[a-zA-Z]++\(\) should return [a-zA-Z\\]++ but returns Eloquent\\Phony\\Mock\\Mock#'

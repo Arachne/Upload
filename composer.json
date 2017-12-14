@@ -16,15 +16,16 @@
         "nette/http": "^2.4.0"
     },
     "require-dev": {
-        "arachne/codeception": "^0.7.3",
+        "arachne/codeception": "^0.8.0",
         "arachne/forms": "^0.4.0",
         "codeception/codeception": "^2.3.2",
         "eloquent/phony": "^2.0.0",
         "eloquent/phony-phpunit": "^3.0.0",
-        "friendsofphp/php-cs-fixer": "^2.7.0@dev",
-        "symfony/validator": "^3.2.0",
-        "phpstan/phpstan": "^0.8.5",
-        "phpstan/phpstan-nette": "^0.8.3"
+        "eloquent/phpstan-phony": "^0.1.1",
+        "friendsofphp/php-cs-fixer": "^2.8.0",
+        "symfony/validator": "^4.0.0",
+        "phpstan/phpstan": "^0.9.1",
+        "phpstan/phpstan-nette": "^0.9.0"
     },
     "autoload": {
         "psr-4": {
@@ -54,7 +55,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "0.3-dev"
         }
     }
 }
