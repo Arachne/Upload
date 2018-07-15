@@ -31,7 +31,7 @@ class FileTypeTest extends Unit
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $data = $this->createUploadedFileMock('abcdef', 'original.jpg', true);
         $form->setData($data);
-        $this->assertSame($data, $form->getData());
+        self::assertSame($data, $form->getData());
     }
 
     public function testSubmit(): void
@@ -39,14 +39,14 @@ class FileTypeTest extends Unit
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $data = $this->createUploadedFileMock('abcdef', 'original.jpg', true);
         $form->submit($data);
-        $this->assertSame($data, $form->getData());
+        self::assertSame($data, $form->getData());
     }
 
     public function testSubmitEmpty(): void
     {
         $form = $this->factory->createBuilder(FileType::class)->getForm();
         $form->submit(null);
-        $this->assertNull($form->getData());
+        self::assertNull($form->getData());
     }
 
     public function testSubmitEmptyMultiple(): void
@@ -64,7 +64,7 @@ class FileTypeTest extends Unit
         // submitted data when an input file is uploaded without choosing any file
         $form->submit([null]);
 
-        $this->assertSame([], $form->getData());
+        self::assertSame([], $form->getData());
     }
 
     public function testSetDataMultiple(): void
@@ -85,7 +85,7 @@ class FileTypeTest extends Unit
         ];
 
         $form->setData($data);
-        $this->assertSame($data, $form->getData());
+        self::assertSame($data, $form->getData());
     }
 
     public function testSubmitMultiple(): void
@@ -106,10 +106,10 @@ class FileTypeTest extends Unit
         ];
 
         $form->submit($data);
-        $this->assertSame($data, $form->getData());
+        self::assertSame($data, $form->getData());
         $view = $form->createView();
-        $this->assertSame('arachne_file[]', $view->vars['full_name']);
-        $this->assertArrayHasKey('multiple', $view->vars['attr']);
+        self::assertSame('arachne_file[]', $view->vars['full_name']);
+        self::assertArrayHasKey('multiple', $view->vars['attr']);
     }
 
     public function testDontPassValueToView(): void
@@ -119,7 +119,7 @@ class FileTypeTest extends Unit
             FileType::class => $this->createUploadedFileMock('abcdef', 'original.jpg', true),
         ]);
         $view = $form->createView();
-        $this->assertEquals('', $view->vars['value']);
+        self::assertEquals('', $view->vars['value']);
     }
 
     private function createUploadedFileMock(string $name, string $originalName, bool $valid): FileUpload

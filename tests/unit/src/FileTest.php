@@ -19,8 +19,8 @@ class FileTest extends Unit
     {
         $file = new File(['maxSize' => $maxSize]);
 
-        $this->assertSame($bytes, $file->maxSize);
-        $this->assertSame($binaryFormat, $file->binaryFormat);
+        self::assertSame($bytes, $file->maxSize);
+        self::assertSame($binaryFormat, $file->binaryFormat);
     }
 
     /**
@@ -33,8 +33,8 @@ class FileTest extends Unit
         $file = new File();
         $file->maxSize = $maxSize;
 
-        $this->assertSame($bytes, $file->maxSize);
-        $this->assertSame($binaryFormat, $file->binaryFormat);
+        self::assertSame($bytes, $file->maxSize);
+        self::assertSame($binaryFormat, $file->binaryFormat);
     }
 
     /**
@@ -63,7 +63,7 @@ class FileTest extends Unit
         } catch (ConstraintDefinitionException $e) {
         }
 
-        $this->assertSame(1000, $file->maxSize);
+        self::assertSame(1000, $file->maxSize);
     }
 
     /**
@@ -112,7 +112,7 @@ class FileTest extends Unit
     {
         $file = new File(['maxSize' => $maxSize, 'binaryFormat' => $guessedFormat]);
 
-        $this->assertSame($binaryFormat, $file->binaryFormat);
+        self::assertSame($binaryFormat, $file->binaryFormat);
     }
 
     public function provideFormats(): array

@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 class FileValidatorTest extends ConstraintValidatorTestCase
 {
     /**
-     * @var string|null
+     * @var string
      */
     protected $path;
 
     /**
-     * @var resource|null
+     * @var resource
      */
     protected $file;
 
@@ -31,7 +31,16 @@ class FileValidatorTest extends ConstraintValidatorTestCase
         parent::setUp();
 
         $this->path = __DIR__.'/../../_temp/FileValidatorTest';
-        $this->file = fopen($this->path, 'w');
+
+        $resource = fopen($this->path, 'w');
+
+        if ($resource === false) {
+            self::fail();
+
+            return;
+        }
+
+        $this->file = $resource;
         fwrite($this->file, ' ', 1);
     }
 
@@ -39,30 +48,25 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         parent::tearDown();
 
-        if (is_resource($this->file)) {
-            fclose($this->file);
-        }
+        fclose($this->file);
 
         if (file_exists($this->path)) {
             unlink($this->path);
         }
-
-        $this->path = null;
-        $this->file = null;
     }
 
     public function testNullIsValid(): void
     {
         $this->validator->validate(null, new File());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new File());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     /**
@@ -77,7 +81,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate($this->path, new File());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testValidUploadedfile(): void
@@ -94,7 +98,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($file, new File());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function provideMaxSizeExceededTests(): array
@@ -172,7 +176,6 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
-        fclose($this->file);
 
         $constraint = new File(
             [
@@ -224,7 +227,6 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
-        fclose($this->file);
 
         $constraint = new File(
             [
@@ -235,7 +237,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($this->getFile($this->path), $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     /**
@@ -283,7 +285,6 @@ class FileValidatorTest extends ConstraintValidatorTestCase
     {
         fseek($this->file, $bytesWritten - 1, SEEK_SET);
         fwrite($this->file, '0');
-        fclose($this->file);
 
         $constraint = new File(
             [
@@ -311,17 +312,17 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->setConstructorArgs([__DIR__.'/../fixtures/foo'])
             ->getMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTemporaryFile')
-            ->will($this->returnValue($this->path));
+            ->will(self::returnValue($this->path));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getContentType')
-            ->will($this->returnValue('image/jpg'));
+            ->will(self::returnValue('image/jpg'));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isOk')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $constraint = new File(
             [
@@ -331,7 +332,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($file, $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testValidWildcardMimeType(): void
@@ -341,17 +342,17 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->setConstructorArgs([__DIR__.'/../fixtures/foo'])
             ->getMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTemporaryFile')
-            ->will($this->returnValue($this->path));
+            ->will(self::returnValue($this->path));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getContentType')
-            ->will($this->returnValue('image/jpg'));
+            ->will(self::returnValue('image/jpg'));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isOk')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $constraint = new File(
             [
@@ -361,7 +362,7 @@ class FileValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($file, $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testInvalidMimeType(): void
@@ -371,17 +372,17 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->setConstructorArgs([__DIR__.'/../fixtures/foo'])
             ->getMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTemporaryFile')
-            ->will($this->returnValue($this->path));
+            ->will(self::returnValue($this->path));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getContentType')
-            ->will($this->returnValue('application/pdf'));
+            ->will(self::returnValue('application/pdf'));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isOk')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $constraint = new File(
             [
@@ -407,17 +408,17 @@ class FileValidatorTest extends ConstraintValidatorTestCase
             ->setConstructorArgs([__DIR__.'/../fixtures/foo'])
             ->getMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTemporaryFile')
-            ->will($this->returnValue($this->path));
+            ->will(self::returnValue($this->path));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getContentType')
-            ->will($this->returnValue('application/pdf'));
+            ->will(self::returnValue('application/pdf'));
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isOk')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $constraint = new File(
             [

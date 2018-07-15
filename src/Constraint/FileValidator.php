@@ -34,7 +34,7 @@ class FileValidator extends ConstraintValidator
     ];
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -50,7 +50,7 @@ class FileValidator extends ConstraintValidator
             switch ($value->getError()) {
                 case UPLOAD_ERR_INI_SIZE:
                     $iniLimitSize = self::getMaxFilesize();
-                    if ($constraint->maxSize && $constraint->maxSize < $iniLimitSize) {
+                    if ($constraint->maxSize !== null && $constraint->maxSize < $iniLimitSize) {
                         $limitInBytes = $constraint->maxSize;
                         $binaryFormat = $constraint->binaryFormat;
                     } else {
@@ -111,7 +111,7 @@ class FileValidator extends ConstraintValidator
             }
         }
 
-        if (!is_scalar($value) && !$value instanceof FileUpload && !(is_object($value) && method_exists($value, '__toString'))) {
+        if (!$value instanceof FileUpload && !$this->isCastableToString($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -135,7 +135,7 @@ class FileValidator extends ConstraintValidator
             return;
         }
 
-        $sizeInBytes = filesize($path);
+        $sizeInBytes = (int) filesize($path);
 
         if (0 === $sizeInBytes) {
             $this->context->buildViolation($constraint->disallowEmptyMessage)
@@ -146,7 +146,7 @@ class FileValidator extends ConstraintValidator
             return;
         }
 
-        if ($constraint->maxSize) {
+        if ($constraint->maxSize !== null) {
             $limitInBytes = $constraint->maxSize;
 
             if ($sizeInBytes > $limitInBytes) {
@@ -163,7 +163,7 @@ class FileValidator extends ConstraintValidator
             }
         }
 
-        if ($constraint->mimeTypes) {
+        if ($constraint->mimeTypes !== []) {
             $mimeTypes = (array) $constraint->mimeTypes;
             $mime = $value instanceof FileUpload ? $value->getContentType() : finfo_file(finfo_open(FILEINFO_MIME_TYPE), $value);
 
@@ -172,8 +172,10 @@ class FileValidator extends ConstraintValidator
                     return;
                 }
 
-                if ($discrete = strstr($mimeType, '/*', true)) {
-                    if (strstr($mime, '/', true) === $discrete) {
+                $discrete = strstr($mimeType, '/*', true);
+
+                if ((bool) $discrete) {
+                    if ($mime !== null && strstr($mime, '/', true) === $discrete) {
                         return;
                     }
                 }
@@ -236,7 +238,7 @@ class FileValidator extends ConstraintValidator
      */
     public static function getMaxFilesize(): int
     {
-        $iniMax = strtolower(ini_get('upload_max_filesize'));
+        $iniMax = strtolower((string) ini_get('upload_max_filesize'));
         if ('' === $iniMax) {
             return PHP_INT_MAX;
         }
@@ -259,5 +261,13 @@ class FileValidator extends ConstraintValidator
         }
 
         return $max;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function isCastableToString($value): bool
+    {
+        return is_scalar($value) || (is_object($value) && method_exists($value, '__toString'));
     }
 }

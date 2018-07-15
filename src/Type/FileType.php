@@ -23,7 +23,7 @@ class FileType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => function (Options $options) {
-                    return $options['multiple'] ? null : FileUpload::class;
+                    return (bool) $options['multiple'] ? null : FileUpload::class;
                 },
             ]
         );
