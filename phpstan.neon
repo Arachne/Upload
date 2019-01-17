@@ -10,4 +10,4 @@ parameters:
         - %rootDir%/../../../tests/_*
 
     ignoreErrors:
-        - '#^Property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize \(int\) does not accept int\|string#'
+        - '~^Property Symfony\\Component\\Validator\\Constraints\\File::\$maxSize \(int\) does not accept int\|string~'
